@@ -3,15 +3,16 @@ package nl.fluitit.api.termpayments.calculation;
 import nl.fluitit.api.termpayments.model.TermPayment;
 import nl.fluitit.api.termpayments.model.TypeOfRepayment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.math.MathContext.*;
+import static java.math.MathContext.DECIMAL32;
 
+@Component
 public class TermPaymentsCalculator {
 
     private final AnnuityCalculator annuityCalculator;

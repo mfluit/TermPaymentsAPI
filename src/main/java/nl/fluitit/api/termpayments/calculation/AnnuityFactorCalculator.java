@@ -1,13 +1,13 @@
 package nl.fluitit.api.termpayments.calculation;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ONE;
 import static java.math.MathContext.DECIMAL32;
 
-@Service
+@Component
 public class AnnuityFactorCalculator {
     /**
      * Calculates the annuity factor

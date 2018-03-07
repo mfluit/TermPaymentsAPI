@@ -1,15 +1,14 @@
 package nl.fluitit.api.termpayments.calculation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 
-import static java.math.MathContext.*;
+import static java.math.MathContext.DECIMAL32;
 
-@Service
+@Component
 public class AnnuityCalculator {
 
     private final AnnuityFactorCalculator annuityFactorCalculator;
