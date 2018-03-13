@@ -4,6 +4,7 @@ import nl.fluitit.api.termpayments.resources.data.TermPaymentsRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
@@ -13,7 +14,7 @@ import javax.ws.rs.core.Response;
 public class TermPaymentsResource {
 
     @POST
-    public Response termpayments(@RequestBody TermPaymentsRequest termPaymentsRequest) {
+    public Response termpayments(@Valid @RequestBody TermPaymentsRequest termPaymentsRequest) {
 
         /*
          * TODO: - implement GET method
