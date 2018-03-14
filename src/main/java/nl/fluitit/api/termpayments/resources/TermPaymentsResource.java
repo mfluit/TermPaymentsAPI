@@ -1,34 +1,36 @@
 package nl.fluitit.api.termpayments.resources;
 
+import nl.fluitit.api.termpayments.calculation.TermPaymentsCalculator;
+import nl.fluitit.api.termpayments.model.TermPayment;
 import nl.fluitit.api.termpayments.resources.data.TermPaymentsRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Component
 @Path("/termpayments")
 public class TermPaymentsResource {
+    private TermPaymentsCalculator calculator;
+
+    @Autowired
+    public TermPaymentsResource(TermPaymentsCalculator calculator) {
+        this.calculator = calculator;
+    }
 
     @POST
-    public Response termpayments(@Valid @RequestBody TermPaymentsRequest termPaymentsRequest) {
+    public List<TermPayment> calculateTermPayments(@Valid @RequestBody TermPaymentsRequest termPaymentsRequest) {
 
-        /*
-         * TODO: - implement GET method
-         *       - implement (bean) validation of the request
-         *       - call TermPaymentCalculator and return result
-         *       - check exception handling
-         */
-
-
-
-        return Response
-                .ok()
-                .entity("termpayments")
-                .build();
+        return calculator.calculateTermPayments(
+                termPaymentsRequest.getRemainingDebt(),
+                termPaymentsRequest.getRemainingPeriods(),
+                termPaymentsRequest.getInterestRate(),
+                termPaymentsRequest.getTypeOfRepayment()
+        );
     }
 }
 

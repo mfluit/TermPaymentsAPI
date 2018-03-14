@@ -3,21 +3,19 @@ package nl.fluitit.api.termpayments.calculation;
 import nl.fluitit.api.termpayments.model.TermPayment;
 import nl.fluitit.api.termpayments.model.TypeOfRepayment;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class TermPaymentsCalculatorTest {
 
     private TermPaymentsCalculator calculator = new TermPaymentsCalculator(new AnnuityCalculator(new AnnuityFactorCalculator()));
 
     @Test
-    public void givenAnAnnuity_calculateTermPayments_returnsCorrectListofTermPayments() {
+    public void givenAnAnnuity_calculateTermPayments_returnsCorrectListOfTermPayments() {
         List<TermPayment> termPayments = calculator.calculateTermPayments(
                 new BigDecimal("178700"),
                 360,
