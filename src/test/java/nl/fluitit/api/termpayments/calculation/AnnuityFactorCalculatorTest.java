@@ -1,19 +1,27 @@
 package nl.fluitit.api.termpayments.calculation;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 import static java.math.MathContext.DECIMAL32;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class AnnuityFactorCalculatorTest {
+
+    @Autowired
+    private AnnuityFactorCalculator calculator;
 
     @Test
     public void calculateAnnuity() {
-        AnnuityFactorCalculator calculator = new AnnuityFactorCalculator();
 
         assertThat(calculator.annuityFactor(interestRatePerPeriod(new BigDecimal("0.1"), 12), 360),
                 equalTo(new BigDecimal("113.9508")));
