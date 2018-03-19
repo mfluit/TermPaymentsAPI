@@ -3,13 +3,10 @@ package nl.fluitit.api.termpayments.resources;
 import nl.fluitit.api.termpayments.model.TermPayment;
 import nl.fluitit.api.termpayments.model.TypeOfRepayment;
 import nl.fluitit.api.termpayments.resources.data.TermPaymentsRequest;
-import nl.fluitit.api.termpayments.services.TermPaymentsCalculatorService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -22,15 +19,8 @@ import static org.junit.Assert.assertThat;
 @SpringBootTest
 public class TermPaymentsResourceTest {
 
-//    @MockBean
-//    private TermPaymentsCalculatorService termPaymentsCalculatorService;
     @Autowired
     private TermPaymentsResource termPaymentsResource;
-
-//    @Before
-//    public void setup() {
-//        termPaymentsResource = new TermPaymentsResource(termPaymentsCalculatorService);
-//    }
 
     @Test
     public void givenValidRequestCalculateTermPaymentsReturnsValidResponse() {
