@@ -12,7 +12,7 @@ import java.util.List;
 import static java.math.MathContext.DECIMAL32;
 
 @Component
-public class AnnuityTermPaymentsCalculator implements TermPaymentsCalculator {
+public class AnnuityTermPaymentsCalculator extends TermPaymentsCalculator {
 
     private final AnnuityCalculator annuityCalculator;
 
@@ -28,40 +28,24 @@ public class AnnuityTermPaymentsCalculator implements TermPaymentsCalculator {
         List<TermPayment> termPayments = new ArrayList<>();
 
         BigDecimal annuity = annuityCalculator.calculateAnnuity(remainingDebt, interestRate, remainingPeriods);
-        BigDecimal interestRatio = interestRate.divide(BigDecimal.valueOf(100));
+        BigDecimal interestRatio = interestRatio(interestRate);
         BigDecimal remainingDebtAfterRepayment = remainingDebt;
 
-        for (int term = remainingPeriods; term >= 0; term--) {
+        for (int term = remainingPeriods; term > 0; term--) {
             BigDecimal interestAmount = interestAmount(interestRatio, remainingDebtAfterRepayment);
             BigDecimal repaymentAmount = repaymentAmount(annuity, interestAmount);
             remainingDebtAfterRepayment = remainingDebtAfterRepayment(remainingDebtAfterRepayment, repaymentAmount);
 
             termPayments.add(new TermPayment(term, annuity, interestAmount, repaymentAmount, remainingDebtAfterRepayment));
         }
-
         return termPayments;
     }
 
-    private BigDecimal remainingDebtAfterRepayment(BigDecimal remainingDebtAfterRepayment, BigDecimal repaymentAmount) {
-        remainingDebtAfterRepayment = remainingDebtAfterRepayment
-                .subtract(repaymentAmount)
-                .setScale(2, RoundingMode.HALF_UP)
-                .max(BigDecimal.ZERO);
-        return remainingDebtAfterRepayment;
-    }
-
-    private BigDecimal repaymentAmount(BigDecimal annuity, BigDecimal interestAmount) {
-        return annuity
+    private BigDecimal repaymentAmount(BigDecimal termPaymentAmount, BigDecimal interestAmount) {
+        return termPaymentAmount
                 .subtract(interestAmount)
                 .setScale(2, RoundingMode.HALF_UP);
     }
 
-    private BigDecimal interestAmount(BigDecimal interestRatio, BigDecimal remainingDebtAfterRepayment) {
-        BigDecimal monthsPerYear = new BigDecimal(12);
-        BigDecimal interestRateRatioPerPeriod = interestRatio.divide(monthsPerYear, DECIMAL32);
 
-        return remainingDebtAfterRepayment
-                .multiply(interestRateRatioPerPeriod)
-                .setScale(2, RoundingMode.HALF_UP);
-    }
 }

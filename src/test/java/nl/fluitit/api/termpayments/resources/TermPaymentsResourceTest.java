@@ -38,9 +38,9 @@ public class TermPaymentsResourceTest {
 
         List<TermPayment> termPayments = termPaymentsResource.calculateTermPayments(request);
 
-        assertThat(termPayments.size(), equalTo(6));
+        assertThat(termPayments.size(), equalTo(5));
         assertThat(termPayments.get(0).getTerm(), equalTo(5));
-        assertThat(termPayments.get(5).getTerm(), equalTo(0));
+        assertThat(termPayments.get(4).getTerm(), equalTo(1));
     }
 
     private TermPaymentsRequest.TermPaymentsRequestBuilder validRequest() {

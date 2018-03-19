@@ -8,30 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class LinearTermPaymentsCalculator implements TermPaymentsCalculator {
+public class LinearTermPaymentsCalculator extends TermPaymentsCalculator {
 
-    /**
-     * For linear calculation no term revision is applied (for now).
-     * This means that the repayment amount will be the same until full repayment.
-     */
     @Override
     public List<TermPayment> calculateTermPayments(final BigDecimal remainingDebt,
                                                    final int remainingPeriods,
                                                    final BigDecimal interestRate) {
         List<TermPayment> termPayments = new ArrayList<>();
+        BigDecimal interestRatio = interestRatio(interestRate);
+        BigDecimal remainingDebtAfterRepayment = remainingDebt;
 
-        // 1) calculateRepaymentAmount (if no term revision, this will stay the same, therefore outside of loop)
+        for (int term = remainingPeriods; term > 0; term--) {
+            BigDecimal interestAmount = interestAmount(interestRatio, remainingDebtAfterRepayment);
+            BigDecimal repaymentAmount = remainingDebtAfterRepayment.divide(BigDecimal.valueOf(term));
+            BigDecimal termPaymentAmount = repaymentAmount.add(interestAmount);
+            remainingDebtAfterRepayment = remainingDebtAfterRepayment(remainingDebtAfterRepayment, repaymentAmount);
 
-
-        for (int term = remainingPeriods; term >= 0; term--) {
-            //2) calculate interestAmount
-            //3) calculate new remaining debt
-            //4) calculate total amount
-            //4) add amounts to list of term payments
-
-
-            //TODO: implement the calculations for linear and add the correct values
-            termPayments.add(new TermPayment(term, BigDecimal.TEN, BigDecimal.ONE, BigDecimal.ONE, remainingDebt.subtract(BigDecimal.ONE)));
+            termPayments.add(new TermPayment(term,
+                    termPaymentAmount,
+                    interestAmount,
+                    repaymentAmount,
+                    remainingDebtAfterRepayment)
+            );
         }
 
         return termPayments;
