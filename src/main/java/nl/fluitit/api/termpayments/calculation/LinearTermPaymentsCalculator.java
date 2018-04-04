@@ -4,6 +4,7 @@ import nl.fluitit.api.termpayments.model.TermPayment;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,18 +21,12 @@ public class LinearTermPaymentsCalculator extends TermPaymentsCalculator {
 
         for (int term = remainingPeriods; term > 0; term--) {
             BigDecimal interestAmount = interestAmount(interestRatio, remainingDebtAfterRepayment);
-            BigDecimal repaymentAmount = remainingDebtAfterRepayment.divide(BigDecimal.valueOf(term));
+            BigDecimal repaymentAmount = remainingDebtAfterRepayment.divide(BigDecimal.valueOf(term), 2, RoundingMode.HALF_UP);
             BigDecimal termPaymentAmount = repaymentAmount.add(interestAmount);
             remainingDebtAfterRepayment = remainingDebtAfterRepayment(remainingDebtAfterRepayment, repaymentAmount);
 
-            termPayments.add(new TermPayment(term,
-                    termPaymentAmount,
-                    interestAmount,
-                    repaymentAmount,
-                    remainingDebtAfterRepayment)
-            );
+            termPayments.add(new TermPayment(term, termPaymentAmount, interestAmount, repaymentAmount, remainingDebtAfterRepayment));
         }
-
         return termPayments;
     }
 }

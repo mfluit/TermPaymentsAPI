@@ -14,9 +14,20 @@ public class LinearTermPaymentsCalculatorTest {
     private TermPaymentsCalculator calculator = new LinearTermPaymentsCalculator();
 
     @Test
-    public void givenAnLinear_calculateTermPayments_returnsCorrectListofTermPayments() {
-        List<TermPayment> result = calculator.calculateTermPayments(BigDecimal.TEN, 10, BigDecimal.valueOf(5.0));
+    public void givenAnLinear_calculateTermPayments_returnsCorrectListOfTermPayments() {
+        List<TermPayment> result = calculator.calculateTermPayments(new BigDecimal("10000.00"), 10, new BigDecimal("5.0"));
         assertThat(result.get(0).getTerm(), equalTo(10));
+        assertThat(result.get(0).getTotalAmount(), equalTo(new BigDecimal("1041.67")));
+        assertThat(result.get(0).getInterestAmount(), equalTo(new BigDecimal("41.67")));
+        assertThat(result.get(0).getRepaymentAmount(), equalTo(new BigDecimal("1000.00")));
+        assertThat(result.get(0).getRemainingDebtAfterRepayment(), equalTo(new BigDecimal("9000.00")));
+
+        assertThat(result.get(9).getTerm(), equalTo(1));
+        assertThat(result.get(9).getTotalAmount(), equalTo(new BigDecimal("1004.17")));
+        assertThat(result.get(9).getInterestAmount(), equalTo(new BigDecimal("4.17")));
+        assertThat(result.get(9).getRepaymentAmount(), equalTo(new BigDecimal("1000.00")));
+        assertThat(result.get(9).getRemainingDebtAfterRepayment(), equalTo(new BigDecimal("0.00")));
+
     }
 
 }
